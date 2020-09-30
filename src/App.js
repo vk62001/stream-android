@@ -17,7 +17,7 @@ function App () {
 
 
   useEffect(() => {
-    //notExit();
+    notExit();
     return () => {
       return
     }
