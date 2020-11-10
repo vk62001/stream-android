@@ -14,6 +14,7 @@ let recorder;
 function App () {
   
   const [openCamera, setopenCamera] = useState(false);
+  const [type, setType] = useState([]);
 
 
   useEffect(() => {
@@ -52,9 +53,16 @@ function App () {
   }
 
   function getRecorder() {
-    var options = { mimeType: 'video/mp4', audioBitsPerSecond: 128000 };
+    const options = {
+      audioBitsPerSecond: 128000,
+      videoBitsPerSecond: 2500000,
+      mimeType: 'video/mp4'
+    }
+    //
+    // const options =  { mimeType: 'video/webm', audioBitsPerSecond: 128000 };
+
     recorder =  new MediaRecorder(mediaStream, options);
-    console.log(recorder)
+    setType(recorder);
     recorder.ondataavailable = videoDataHandler;
   };
 
@@ -70,6 +78,8 @@ function App () {
   function getWebSocket() {
     const modelId = 8; //this.getModelId()
     const socket=`wss://test.socialtechapps.com/?modelId=${modelId}`;
+    //
+
     var websocketEndpoint = socket;
     connection = new WebSocket(websocketEndpoint);
     connection.binaryType = 'arraybuffer';
@@ -108,6 +118,11 @@ function App () {
     connection.close(1000);
     setopenCamera(false);
   }
+
+  function renderObject(){
+      alert(type.mimeType);
+  
+  }
     return (
       <div >
         {/* <ReactFlvPlayer
@@ -124,10 +139,12 @@ function App () {
         ):(
           <div>
           <video  id="video" autoPlay playsInline muted></video>
-          <button onClick={() => startTransmition()}>Start transmition</button>
-          <button onClick={() => stopTransmistion()}>Stop transmitión</button>
+            <button onClick={() => startTransmition()}>Start transmition</button>
+            <button onClick={() => stopTransmistion()}>Stop transmitión</button>
+            {renderObject()}
           </div>
         )}
+        
       </div>
     );
 }
